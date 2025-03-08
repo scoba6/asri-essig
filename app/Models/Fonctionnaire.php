@@ -7,6 +7,7 @@ use Database\Factories\FonctionnaireFactory;
 use Mattiverse\Userstamps\Traits\Userstamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Fonctionnaire extends Model
@@ -28,12 +29,11 @@ class Fonctionnaire extends Model
                            'datefin', 
                            'photo', 
                            'cv', 
-                           'categorie', 
+                           'categorie_id', 
                            'banque', 
                            'rib', 
                            'cnss', 
-                           'cnamgs'
-                        ];
+                           'cnamgs'];
 
 
     /**
@@ -41,9 +41,9 @@ class Fonctionnaire extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function ministere(): HasMany
+    public function carrieres(): HasMany
     {
-        return $this->hasMany(Ministere::class);
+        return $this->hasMany(Carriere::class);
     }
 
     /**
@@ -51,9 +51,19 @@ class Fonctionnaire extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function projet(): HasMany
+    public function projets(): HasMany
     {
         return $this->hasMany(Projet::class);
+    }
+
+    /**
+     * Get the categorie that owns the Fonctionnaire
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function categorie(): BelongsTo
+    {
+        return $this->belongsTo(Categorie::class);
     }
 
 

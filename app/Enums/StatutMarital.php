@@ -5,9 +5,7 @@ use Filament\Support\Contracts\HasLabel;
 enum StatutMarital: string implements HasLabel
 {
     case A ='Célibataire';
-
     case B = 'Marié';
-
     case C = 'Veuf';
     case D = 'Divorcé';
 

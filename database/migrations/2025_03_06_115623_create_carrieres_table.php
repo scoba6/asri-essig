@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artistes', function (Blueprint $table) {
+        Schema::create('carrieres', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
-            $table->string('prenom');
-            $table->date('datenaiss');
-            $table->string('lieunaiss');
-            $table->string('sexe');
-            $table->string('nomart');
+            $table->foreignId('fonctionnaire_id')->constrained();
+            $table->foreignId('ministere_id')->constrained();   
+            $table->date('date_debut');
+            $table->date('date_fin');
+            $table->text('description');
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artistes');
+        Schema::dropIfExists('carrieres');
     }
 };

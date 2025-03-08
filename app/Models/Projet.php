@@ -13,6 +13,8 @@ class Projet extends Model
     /** @use HasFactory<\Database\Factories\ProjetFactory> */
     use HasFactory, Userstamps, SoftDeletes;
 
+    protected $fillable = ['libprj', 'desprj', 'fonctionnaire_id'];
+
 
     /**
      * Get the fonctionnaire that owns the Projet

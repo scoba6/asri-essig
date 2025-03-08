@@ -4,9 +4,9 @@ namespace App\Filament\Resources\ProjetResource\Pages;
 
 use App\Filament\Resources\ProjetResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListProjets extends ListRecords
+class ManageProjets extends ManageRecords
 {
     protected static string $resource = ProjetResource::class;
 

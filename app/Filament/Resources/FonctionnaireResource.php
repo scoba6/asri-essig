@@ -3,23 +3,27 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Sexe;
-use App\Enums\StatutMarital;
 use Filament\Forms;
 use Filament\Tables;
+use App\Enums\Banque;
 use Filament\Forms\Form;
+use App\Models\Categorie;
 use Filament\Tables\Table;
+use App\Enums\StatutMarital;
 use App\Models\Fonctionnaire;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use RelationManagers\ProjetRelationManager;
+use RelationManagers\CarriereRelationManager;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FonctionnaireResource\Pages;
 use App\Filament\Resources\FonctionnaireResource\RelationManagers;
-use App\Models\Categorie;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 
 class FonctionnaireResource extends Resource
 {
@@ -52,7 +56,7 @@ class FonctionnaireResource extends Resource
                 Select::make('situation')->label('STATUT MARITAL')
                     ->required()
                     ->options(StatutMarital::class),
-                Select::make('categorie')->label('CATEGORIE')
+                Select::make('categorie_id')->label('CATEGORIE')
                     ->options(Categorie::all()->pluck('libcat', 'id'))
                     ->searchable()
                     ->required()
@@ -84,7 +88,8 @@ class FonctionnaireResource extends Resource
                 TextInput::make('rib')->label('RIB')
                     ->required()
                     ->placeholder('RIB du fonctionnaire'),
-                TextInput::make('banque')->label('BANQUE')
+                Select::make('banque')->label('BANQUE')
+                    ->options(Banque::class)
                     ->required()
                     ->placeholder('Banque du fonctionnaire'), 
                 FileUpload::make('cv')->label('CV')
@@ -101,7 +106,52 @@ class FonctionnaireResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('nom')
+                    ->label('NOM')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('prenom')
+                    ->label('PRENOM')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('prenom')
+                    ::make('matricule')
+                    ->label('MATRICULE')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('categorie.libcat')
+                    ->label('CATEGORIE')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('categorie.libcat')
+                    ::make('tel')
+                    ->label('TELEPHONE')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('categorie.libcat')
+                    ::make('email')
+                    ->label('EMAIL')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('categorie.libcat')
+                    ::make('dateentree')
+                    ->label('DATE D\'ENTREE')
+                    ->date('d/m/Y')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('categorie.libcat')
+                    ::make('datefin')
+                    ->label('DATE DE RETRAITE')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('banque')
+                    ->label('BANQUE')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('rib')
+                    ->label('RIB')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 
@@ -119,7 +169,8 @@ class FonctionnaireResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            'carrieres' => RelationManagers\CarrieresRelationManager::class,
+            'projets' => RelationManagers\ProjetsRelationManager::class,
         ];
     }
 
